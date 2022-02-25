@@ -1,6 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "../actions";
 
-class recentPosts extends Component {
+class RecentPosts extends Component {
+  componentDidMount() {
+    this.props.fetchRecentPosts();
+  }
+
   render() {
     return (
       <div className="recent-posts">
@@ -17,4 +23,4 @@ class recentPosts extends Component {
   }
 }
 
-export default recentPosts;
+export default connect(null, actions)(RecentPosts);

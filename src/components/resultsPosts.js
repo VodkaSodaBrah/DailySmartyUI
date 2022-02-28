@@ -1,44 +1,31 @@
 import React, { Component } from "react";
-import { Field, reduxForm } from "redux-form";
 
-import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import Post from "./post";
 
-class SearchBar extends Component {
-  handleFormSubmit = function ({ query }) {
-    this.props.onSubmit(query);
-  };
-
-  renderInput(field) {
-    return (
-      <input
-        type="text"
-        placeholder="&#xf002; Search DailySmarty"
-        {...field.input}
-      />
-    );
+class ResultsPosts extends Component {
+  renderPosts() {
+    const posts = this.props.posts.map((post, index) => {
+      return <Post type="result" key={index} {...post} />;
+    });
+    return posts;
   }
 
   render() {
-    const { handleSubmit } = this.props;
-
     return (
-      <form
-        className={`search-bar search-bar__${this.props.page}`}
-        onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}
-      >
-        <div className="search-bar__wrapper">
-          <Field name="query" component={this.renderInput} />
-          <p>Press return to search</p>
+      <div className="results-posts">
+        <div className="results-posts__wrapper">
+          <ul className="results-posts__posts">{this.renderPosts()}</ul>
         </div>
-      </form>
+      </div>
     );
   }
 }
 
-SearchBar = reduxForm({
-  form: "searchBar",
-})(SearchBar);
+function mapStateToProps(state) {
+  return {
+    posts: state.posts.resultsPosts,
+  };
+}
 
-SearchBar = withRouter(SearchBar);
-
-export default SearchBar;
+export default connect(mapStateToProps)(ResultsPosts);
